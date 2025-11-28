@@ -4,6 +4,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Serious_Game_Na_sciezce_zycia;
 
+public class Aaa
+{
+    public int x;
+    int y;
+    float aaa;
+}
+
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
@@ -11,6 +18,8 @@ public class Game1 : Game
     Texture2D pixel;
     private Rectangle pixelRect;
     private Vector2 pixelPosition;
+    private Vector2 pixelVelocity;
+    private Rectangle collider = new(100, 20, 70, 90);
 
     public Game1()
     {
@@ -30,9 +39,9 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         pixel = new Texture2D(GraphicsDevice, 1, 1);
-        pixel.SetData(new Color[] {Color.White});
-        pixelPosition = new Vector2(0,0);
-        pixelRect = new Rectangle(0 , 0, 10, 15);
+        pixel.SetData(new Color[] { Color.White });
+        pixelPosition = new Vector2(0, 0);
+        pixelRect = new Rectangle(0, 0, 10, 15);
         // TODO: use this.Content to load your game content here
     }
 
@@ -42,17 +51,36 @@ public class Game1 : Game
             Exit();
 
         var keyboardState = Keyboard.GetState();
-        if (keyboardState.IsKeyDown(Keys.Down)) {
-            pixelPosition += new Vector2(0,2);
-        } else if (keyboardState.IsKeyDown(Keys.Up)){
-             pixelPosition += new Vector2(0,-2);
-        } else if (keyboardState.IsKeyDown(Keys.Left)){
-             pixelPosition += new Vector2(-2,0);
-        } else if (keyboardState.IsKeyDown(Keys.Right)){
-             pixelPosition += new Vector2(2,0);
+        
+        
+        if (keyboardState.IsKeyDown(Keys.Down))
+        {
+            pixelVelocity = new Vector2(0, 2);
         }
-        // TODO: Add your update logic here
-            pixelRect = new Rectangle((int)pixelPosition.X, (int)pixelPosition.Y, 10, 15); 
+        else if (keyboardState.IsKeyDown(Keys.Up))
+        {
+            pixelVelocity = new Vector2(0, -2);
+        }
+        else if (keyboardState.IsKeyDown(Keys.Left))
+        {
+            pixelVelocity = new Vector2(-2, 0);
+        }
+        else if (keyboardState.IsKeyDown(Keys.Right))
+        {
+            pixelVelocity = new Vector2(2, 0);
+        }
+
+
+        if (!collider.Intersects(new Rectangle(
+                pixelRect.X + (int)pixelVelocity.X,
+                pixelRect.Y + (int)pixelVelocity.Y,
+                pixelRect.Width, pixelRect.Height
+            )
+            )) {
+            pixelPosition += pixelVelocity;
+        }
+        pixelVelocity = Vector2.Zero;
+        pixelRect = new Rectangle((int)pixelPosition.X, (int)pixelPosition.Y, 10, 15);
 
         base.Update(gameTime);
     }
@@ -63,9 +91,10 @@ public class Game1 : Game
         _spriteBatch.Begin();
 
 
+
+        _spriteBatch.Draw(pixel, collider, Color.Yellow);
         _spriteBatch.Draw(pixel, pixelRect, Color.Red);
-        
-        
+
         _spriteBatch.End();
         base.Draw(gameTime);
     }

@@ -8,7 +8,7 @@
         "name": "C#: Serious_Game_Na_sciezce_zycia Debug",
         "type": "dotnet",
         "request": "launch",
-        "projectPath": "${workspaceFolder}/Serious_Game_Na_sciezce_zycia.csproj"
+        "projectPath": "${workspaceFolder}/Serious-Game-Na-sciezce-zycia.csproj"
       }
     ],
   }
