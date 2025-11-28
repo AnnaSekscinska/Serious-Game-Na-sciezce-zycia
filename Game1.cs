@@ -1,25 +1,23 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Serious_Game_Na_sciezce_zycia;
 
-public class Aaa
-{
-    public int x;
-    int y;
-    float aaa;
-}
 
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    Texture2D pixel;
-    private Rectangle pixelRect;
-    private Vector2 pixelPosition;
-    private Vector2 pixelVelocity;
-    private Rectangle collider = new(100, 20, 70, 90);
+    static Texture2D pixel;
+
+    Player player = new(new(0, 0), new(10, 15));
+    GameObject rect1 = new(new(100, 20), new(70, 90));
+
+    List<GameObject> gameObjects = new();
 
     public Game1()
     {
@@ -30,8 +28,8 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
-
+        gameObjects.Add(player);
+        gameObjects.Add(rect1);
         base.Initialize();
     }
 
@@ -40,9 +38,8 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         pixel = new Texture2D(GraphicsDevice, 1, 1);
         pixel.SetData(new Color[] { Color.White });
-        pixelPosition = new Vector2(0, 0);
-        pixelRect = new Rectangle(0, 0, 10, 15);
-        // TODO: use this.Content to load your game content here
+        GameObject.pixel = pixel;
+        player.position = new Vector2(0, 0);
     }
 
     protected override void Update(GameTime gameTime)
@@ -50,37 +47,23 @@ public class Game1 : Game
         if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        var keyboardState = Keyboard.GetState();
-        
-        
-        if (keyboardState.IsKeyDown(Keys.Down))
+        foreach (var gameObj in gameObjects)
         {
-            pixelVelocity = new Vector2(0, 2);
-        }
-        else if (keyboardState.IsKeyDown(Keys.Up))
-        {
-            pixelVelocity = new Vector2(0, -2);
-        }
-        else if (keyboardState.IsKeyDown(Keys.Left))
-        {
-            pixelVelocity = new Vector2(-2, 0);
-        }
-        else if (keyboardState.IsKeyDown(Keys.Right))
-        {
-            pixelVelocity = new Vector2(2, 0);
+            gameObj.Update(gameTime);
         }
 
-
-        if (!collider.Intersects(new Rectangle(
-                pixelRect.X + (int)pixelVelocity.X,
-                pixelRect.Y + (int)pixelVelocity.Y,
-                pixelRect.Width, pixelRect.Height
-            )
-            )) {
-            pixelPosition += pixelVelocity;
+        foreach (var gameObj in gameObjects)
+        {
+            if (gameObj.id == player.id) { continue; }
+            if (player.rect.Intersects(gameObj.rect))
+            {
+                player.position -= player.velocity;
+            }
         }
-        pixelVelocity = Vector2.Zero;
-        pixelRect = new Rectangle((int)pixelPosition.X, (int)pixelPosition.Y, 10, 15);
+        foreach (var gameObj in gameObjects)
+        {
+            gameObj.physicsUpdate(gameTime);
+        }
 
         base.Update(gameTime);
     }
@@ -90,10 +73,12 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
 
+        foreach (var gameObj in gameObjects)
+        {
+            gameObj.Draw(_spriteBatch, gameTime);
+        }
 
 
-        _spriteBatch.Draw(pixel, collider, Color.Yellow);
-        _spriteBatch.Draw(pixel, pixelRect, Color.Red);
 
         _spriteBatch.End();
         base.Draw(gameTime);
