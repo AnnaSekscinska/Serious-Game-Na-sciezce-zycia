@@ -1,9 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Serious_Game_Na_sciezce_zycia;
 
 public class Player : GameObject
 {
-    public Player(Vector2 position, Point size) : base(position, size)
+    public Player(Vector2 position, Point size, Vector2 colliderPositionOffset, Point colliderSize) : base(position, size, colliderPositionOffset, colliderSize)
     {
 
     }

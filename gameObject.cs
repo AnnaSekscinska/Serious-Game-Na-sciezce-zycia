@@ -1,25 +1,42 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+
+namespace Serious_Game_Na_sciezce_zycia;
 
 public class GameObject
 {
     private static int globalId = 0;
     public int id;
-    public static Texture2D pixel;
+    public static Dictionary<Texture, Texture2D> Textures;
+    public static SpriteFont Font;
     public Point size;
     public Vector2 position;
+    public Vector2 colliderPositionOffset;
+    public Point colliderSize;
     public Vector2 velocity;
-    public Rectangle rect
+    public Rectangle Collider
     {
-        get => new Rectangle(position.ToPoint(),size);
+        get => new Rectangle((colliderPositionOffset + position).ToPoint(), colliderSize);
     }
-
-    public GameObject(Vector2 position, Point size)
+    public Rectangle DrawDestination
+    {
+        get => new Rectangle(position.ToPoint(), size);
+    }
+    public GameObject(Vector2 position, Point size, Vector2 colliderPositionOffset, Point colliderSize)
     {
         id = globalId++;
         this.position = position;
         this.size = size;
+        this.colliderPositionOffset = colliderPositionOffset;
+        this.colliderSize = colliderSize;
+    }
+    public GameObject(Vector2 position, Point size) {
+        id = globalId++;
+        this.position = position;
+        this.size = size;
+        this.colliderPositionOffset = Vector2.Zero;
+        this.colliderSize = size;
     }
 
     public virtual void Update(GameTime gameTime)
@@ -33,6 +50,6 @@ public class GameObject
 
     public virtual void Draw(SpriteBatch sb, GameTime gameTime)
     {
-        sb.Draw(pixel, rect, Color.Red);
+        sb.Draw(Textures[Texture.pixel], DrawDestination, Color.Black);
     }
 }
