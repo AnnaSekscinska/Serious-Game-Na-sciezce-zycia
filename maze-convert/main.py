@@ -47,15 +47,15 @@ for y in range(height):
 # =====================
 with open(OUTPUT_PATH, "w") as f:
     if EXPORT_AS == "char_array":
-        f.write("char[,] map = new char[,]\n{\n")
+        f.write("char[] map = [\n{\n")
         for row in rows:
-            f.write("    { " + ", ".join(f"'{c}'" for c in row) + " },\n")
+            f.write("     " + ", ".join(f"'{c}'" for c in row) + ", \n")
         f.write("};\n")
 
     elif EXPORT_AS == "string_array":
         f.write("string[] map = new string[]\n{\n")
         for row in rows:
             f.write(f'    "{"" .join(row)}",\n')
-        f.write("};\n")
+        f.write("];\n")
 
 print("Done! Output written to", OUTPUT_PATH)

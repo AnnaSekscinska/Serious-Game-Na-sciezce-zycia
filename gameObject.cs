@@ -8,10 +8,13 @@ public class GameObject
 {
     private static int globalId = 0;
     public int id;
+    public List<int> group = [];
+    public bool destroy = false;
     public static Dictionary<Texture, Texture2D> Textures;
     public static SpriteFont Font;
     public Point size;
     public Vector2 position;
+    public bool hasCollision = true;
     public Vector2 colliderPositionOffset;
     public Point colliderSize;
     public Vector2 velocity;
@@ -41,7 +44,7 @@ public class GameObject
 
     public virtual void Update(GameTime gameTime)
     {
-        position += velocity;
+        
     }
     public virtual void physicsUpdate(GameTime gameTime)
     {

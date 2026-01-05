@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace Serious_Game_Na_sciezce_zycia;
@@ -18,22 +19,55 @@ public class Level
         var width = MapData.mapWidth;
         var height = MapData.mapHeight;
         var map = MapData.map1;
+        var questionSet = MapData.questionair;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 var a = map[j + i * width];
                 var position = new Vector2(Tile.offsetX * j, (Tile.offsetY * i));
-                switch (a) {
-                    case '#':
-                        gameObjects.Add(new Tile(
-                                position: position,
-                                size: new Point(),
-                                colliderPositionOffset: new Vector2(0, 70),
-                                colliderSize: new Point(100, 94)
-                                )
-                            );
-                        break;
-                    default:
-                        break;
+                if (a == '#') {
+                    gameObjects.Add(new Tile(
+                            position: position,
+                            size: new Point(),
+                            colliderPositionOffset: new Vector2(0, 70),
+                            colliderSize: new Point(100, 94),
+                            color: Color.Orange,
+                            group: []
+                            )
+                        );
+                }
+                else if (char.IsLower(a)) {
+                    //Console.WriteLine($"{a} and {a-'0'}");
+                    gameObjects.Add(new Tile(
+                        group: new List<int> { questionSet[a - 'a'].correctTile },
+                        position: position,
+                        size: new Point(),
+                        colliderPositionOffset: new Vector2(0, 70),
+                        colliderSize: new Point(100, 94),
+                        color: Color.Green
+                        )
+                    );
+                }
+                else if (char.IsUpper(a)) { // incorrect tile (should be the same colour)
+                    //Console.WriteLine($"{a} and {a - '0'}");
+                    gameObjects.Add(new Tile(
+                        group: new List<int> { questionSet[a - 'A'].incorrectTile },
+                        position: position,
+                        size: new Point(),
+                        colliderPositionOffset: new Vector2(0, 70),
+                        colliderSize: new Point(100, 94),
+                        color: Color.Red
+                        )
+                    );
+                }
+                else if (char.IsNumber(a)) {
+                    gameObjects.Add(new Zone(
+                        group: new List<int> { a - '0' },
+                        question: questionSet[a - '0'],
+                        position: position,
+                        size: new Point(100, 94)
+                        )
+                    );
+
                 }
             }
         }
@@ -62,7 +96,7 @@ public class Level
         // GAMEOBJECTS draw
 
 
-      
+
     }
 
     public void Draw(SpriteBatch sb, GameTime gameTime) {
