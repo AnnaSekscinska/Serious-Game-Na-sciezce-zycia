@@ -18,7 +18,7 @@ public class Level
     private void ConvertLevelToGameObjects() {
         var width = MapData.mapWidth;
         var height = MapData.mapHeight;
-        var map = MapData.map1;
+        var map = MapData.map;
         var questionSet = MapData.questionair;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -84,7 +84,7 @@ public class Level
 
         var width = MapData.mapWidth;
         var height = MapData.mapHeight;
-        var map = MapData.map1;
+        var map = MapData.map;
 
         // FLOR draw  TODO: create a single texture for potential performance improvement
         for (int i = 0; i < height; i++) {

@@ -3,7 +3,7 @@ from PIL import Image
 # =====================
 # CONFIG
 # =====================
-IMAGE_PATH = "aaa.png"
+IMAGE_PATH = "Maze3.png"
 OUTPUT_PATH = "output.txt"
 
 # Characters from dark → light
@@ -50,7 +50,7 @@ with open(OUTPUT_PATH, "w") as f:
         f.write("char[] map = [\n{\n")
         for row in rows:
             f.write("     " + ", ".join(f"'{c}'" for c in row) + ", \n")
-        f.write("};\n")
+        f.write("];\n")
 
     elif EXPORT_AS == "string_array":
         f.write("string[] map = new string[]\n{\n")
