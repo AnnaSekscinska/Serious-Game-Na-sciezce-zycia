@@ -89,7 +89,7 @@ public class GUI
                     ? "POPRAWNA ODPOWIEDZ!\n Poprawna droga się przed tobą otwiera!"
                     : "TY DEBILU!\n Pacjent ma coraz mniej czasu, a droga nie jest prostsza...";
                 VerifyAnswer.Update(gameTime);
-                //await Task.Delay(5000);
+                //await Task.Delay(5000); // use a timer service instead
                 GameState.questionState = QuestionState.none;
                 GameState.currentMenu = Menu.None;
                 break;

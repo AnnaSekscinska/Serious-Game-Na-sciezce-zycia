@@ -5,6 +5,21 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Serious_Game_Na_sciezce_zycia;
 
+
+public class EndZone : Zone
+{
+    public EndZone(Vector2 position, Point size) : base(null, null, position, size) {
+        group = [100];
+    }
+    public override void Update(GameTime gameTime) {
+        if (Collider.Contains(GameState.PlayerPosition)) {
+            GameState.currentMenu = Menu.WinLevel;
+            GameState.scheduleGroupDestruction.AddRange(group);
+            Console.WriteLine("yupicayay motherfucker!");
+        }
+    }
+}
+
 public class Zone : GameObject
 {
     Question question;
@@ -13,11 +28,6 @@ public class Zone : GameObject
         this.group = group;
         this.question = question;
         hasCollision = false;
-        foreach (int i in group) {
-            // Console.Write("zone");
-            // Console.Write($" {i} ");
-        }
-        Console.WriteLine("");
     }
     public override void Update(GameTime gameTime) {
         if (Collider.Contains(GameState.PlayerPosition)) {
@@ -57,6 +67,7 @@ public class Tile : GameObject
 
     public override void Draw(SpriteBatch sb, GameTime gameTime) {
         sb.Draw(Textures[Texture.single], new Rectangle((int)position.X, (int)position.Y, tileWidthScaled, tileHeightScaled), new Rectangle(0, 0, tileWidth, tileHeight), color);
+        //sb.Draw(Textures[Serious_Game_Na_sciezce_zycia.Texture.pixel], Collider, Color.Yellow);
         // sb.DrawString(Font, $"{position}", position, Color.Black);
     }
 }

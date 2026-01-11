@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -14,7 +15,7 @@ public class Game1 : Game
     private static readonly Dictionary<Texture, Texture2D> Textures = [];
     
     Point Resolution = new Point { X = 1024, Y = 768 };
-    Player player = new(new Vector2(3150, 4250), new Point(50, 90), new Vector2(0,40), new Point(50));
+    Player player;
     Camera camera;
     Viewport viewport;
     SpriteFont font;
@@ -42,9 +43,7 @@ public class Game1 : Game
         _graphics.PreferredBackBufferWidth = Resolution.X;
         _graphics.PreferredBackBufferHeight = Resolution.Y;
         _graphics.ApplyChanges();
-        camera = new Camera(viewport, player);
-        gameObjects.Add(player);
-        level = new Level(gameObjects);
+        
         base.Initialize();
     }
 
@@ -55,6 +54,17 @@ public class Game1 : Game
         Textures[Texture.pixel].SetData(new Color[] { Color.White });
         Textures[Texture.single] = Content.Load<Texture2D>("cropped_tile");
         Textures[Texture.bump] = Content.Load<Texture2D>("bump");
+        player = new(
+        size: new Point(75, 130),
+        colliderPositionOffset: new Vector2(0, 80),
+        colliderSize: new Point(75, 40),
+        content: Content
+        );
+
+        camera = new Camera(viewport, player);
+        gameObjects.Add(player);
+        level = new Level(gameObjects, player);
+
         font = Content.Load<SpriteFont>("default");
         title = Content.Load<SpriteFont>("default");
         GameObject.Textures = Textures;
@@ -77,6 +87,10 @@ public class Game1 : Game
             elapsedTime = 0;
         }
 
+        if (Keyboard.GetState().IsKeyDown(Keys.Enter)) {
+            level.currentLevelId++;
+            level.LoadLevel();
+        }
 
         if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
@@ -110,15 +124,6 @@ public class Game1 : Game
                 gameObjects.RemoveAt(i);
             }
         }
-        if (GameState.scheduleGroupDestruction.Any()) {
-            Console.Write($"delete schedule list: ");
-        }
-        foreach (var delet in GameState.scheduleGroupDestruction) {
-            Console.Write($" {delet} ");
-        }
-        if (GameState.scheduleGroupDestruction.Any()) {
-            Console.Write($"\n");
-        }
         GameState.scheduleGroupDestruction.Clear();
 
         base.Update(gameTime);
@@ -126,7 +131,7 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.Brown);
+        GraphicsDevice.Clear(Color.SandyBrown);
         _spriteBatch.Begin(transformMatrix: camera.Transform);
         
 

@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Serious_Game_Na_sciezce_zycia;
-
 public class Camera
 {
     private GameObject followObj;
@@ -24,8 +23,8 @@ public class Camera
 
     private void UpdateMatrix() {
         Vector3 translation = new Vector3(
-                    Bounds.Width / (2 * Zoom) - followObj.position.X,
-                    Bounds.Height / (2 * Zoom) - followObj.position.Y, 0f);
+                    Bounds.Width / (2 * Zoom) - followObj.position.X-followObj.size.X/2,
+                    Bounds.Height / (2 * Zoom) - followObj.position.Y - followObj.size.Y / 2, 0f);
         Transform = Matrix.CreateTranslation(translation)
                     * Matrix.CreateScale(Zoom);
         InverseViewMatrix = Matrix.Invert(Transform);

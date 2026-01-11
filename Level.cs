@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 
 namespace Serious_Game_Na_sciezce_zycia;
@@ -10,30 +9,52 @@ public class Level
     public static Dictionary<Texture, Texture2D> Textures;
     public List<GameObject> gameObjects;
     public int currentLevelId = 0;
-    public Level(List<GameObject> gameObjects) {
+    public Map currentLevel;
+    Player player;
+    public Level(List<GameObject> gameObjects, Player player) {
         this.gameObjects = gameObjects;
+        this.player = player;
+        LoadLevel();
+    }
+
+    public void LoadLevel() {
         ConvertLevelToGameObjects();
     }
 
     private void ConvertLevelToGameObjects() {
-        var width = MapData.mapWidth;
-        var height = MapData.mapHeight;
-        var map = MapData.map;
-        var questionSet = MapData.questionair;
+        currentLevel = MapData.GetLevel(currentLevelId);
+
+        var width = currentLevel.mapWidth;
+        var height = currentLevel.mapHeight;
+        var map = currentLevel.map;
+        var questionSet = currentLevel.questionair;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 var a = map[j + i * width];
                 var position = new Vector2(Tile.offsetX * j, (Tile.offsetY * i));
                 if (a == '#') {
                     gameObjects.Add(new Tile(
-                            position: position,
-                            size: new Point(),
-                            colliderPositionOffset: new Vector2(0, 70),
-                            colliderSize: new Point(100, 94),
-                            color: Color.Orange,
-                            group: []
-                            )
-                        );
+                        position: position,
+                        size: new Point(),
+                        colliderPositionOffset: new Vector2(0, 70),
+                        colliderSize: new Point(100, 94),
+                        color: Color.Green,
+                        group: []
+                        )
+                    );
+                }
+                else if (a == '@') { // this a player
+                    player.position = position;
+                }
+                else if (a == 'x') { // finish zone
+                    gameObjects.Add(new EndZone(
+                        position: position,
+                        size: new Point(100, 94)
+                        )
+                    );
+                }
+                else if (a == '%') { // dead or alive person
+                    
                 }
                 else if (char.IsLower(a)) {
                     //Console.WriteLine($"{a} and {a-'0'}");
@@ -67,7 +88,6 @@ public class Level
                         size: new Point(100, 94)
                         )
                     );
-
                 }
             }
         }
@@ -82,15 +102,15 @@ public class Level
         var offsetX = 100 / scale;
         var offsetY = 70 / scale;
 
-        var width = MapData.mapWidth;
-        var height = MapData.mapHeight;
-        var map = MapData.map;
+        var width = currentLevel.mapWidth;
+        var height = currentLevel.mapHeight+2;
+        var map = currentLevel.map;
 
         // FLOR draw  TODO: create a single texture for potential performance improvement
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 var position = new Point(offsetX * j, (offsetY * i));
-                sb.Draw(Textures[Texture.bump], new Rectangle(position.X, position.Y, offsetX, offsetY), Color.Brown);
+                sb.Draw(Textures[Texture.bump], new Rectangle(position.X, position.Y, offsetX, offsetY), Color.SandyBrown);
             }
         }
         // GAMEOBJECTS draw
