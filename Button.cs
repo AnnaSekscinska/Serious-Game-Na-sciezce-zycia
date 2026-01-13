@@ -43,6 +43,9 @@ public class Button : Container
                     GameState.questionState = QuestionState.incorrectAnswer;
                     Console.WriteLine(text);
                     Console.WriteLine("You answer wrong");
+                    if (GameState.hearts > 0) {
+                        GameState.hearts--;
+                    }
                 }
             }
             if (backToGame) {

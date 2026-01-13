@@ -19,6 +19,7 @@ public class Level
 
     public void LoadLevel() {
         ConvertLevelToGameObjects();
+        GameState.hearts = 3;
     }
 
     private void ConvertLevelToGameObjects() {

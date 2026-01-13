@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Threading.Tasks;
 
 namespace Serious_Game_Na_sciezce_zycia;
 
@@ -35,7 +34,7 @@ public class GUI
         VerifyAnswer.Embed(new Text(""));
     }
 
-    public async Task Update(GameTime gameTime) {
+    public void Update(GameTime gameTime) {
         if (GameState.questionState == QuestionState.initializeDialogue) { // if triggered a question event, setup dialogue interafce
             GameState.questionState = QuestionState.selectAnswer;
 
@@ -86,12 +85,18 @@ public class GUI
                 break;
             case Menu.VerifyAnswer:
                 ((Text)VerifyAnswer.children[0]).text = GameState.questionState == QuestionState.correctAnswer 
-                    ? "POPRAWNA ODPOWIEDZ!\n Poprawna droga się przed tobą otwiera!"
-                    : "TY DEBILU!\n Pacjent ma coraz mniej czasu, a droga nie jest prostsza...";
+                    ? "POPRAWNA ODPOWIEDZ!\nPoprawna droga się przed tobą otwiera!"
+                    : "NIEPOPRAWNA ODPOWIEDZ\nPacjent ma coraz mniej czasu, a droga nie jest prostsza...";
                 VerifyAnswer.Update(gameTime);
-                //await Task.Delay(5000); // use a timer service instead
-                GameState.questionState = QuestionState.none;
-                GameState.currentMenu = Menu.None;
+                if (GameState.timer.TimerBelow("verifyanswer", 0f)) {
+                    GameState.timer.RemoveTimer("verifyanswer");
+                    GameState.questionState = QuestionState.none;
+                    GameState.currentMenu = Menu.None;
+                }
+                else {
+                    GameState.timer.StartTimer("verifyanswer", 5f);
+                    break;
+                }
                 break;
             default:
                 break;

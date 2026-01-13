@@ -54,11 +54,12 @@ public class Game1 : Game
         Textures[Texture.pixel].SetData(new Color[] { Color.White });
         Textures[Texture.single] = Content.Load<Texture2D>("cropped_tile");
         Textures[Texture.bump] = Content.Load<Texture2D>("bump");
+        Textures[Texture.heart] = Content.Load<Texture2D>("lego_heart");
         player = new(
-        size: new Point(75, 130),
-        colliderPositionOffset: new Vector2(0, 80),
-        colliderSize: new Point(75, 40),
-        content: Content
+            size: new Point(75, 130),
+            colliderPositionOffset: new Vector2(0, 80),
+            colliderSize: new Point(75, 40),
+            content: Content
         );
 
         camera = new Camera(viewport, player);
@@ -86,7 +87,7 @@ public class Game1 : Game
             frameCounter = 0;
             elapsedTime = 0;
         }
-
+        GameState.timer.Update(gameTime);
         if (Keyboard.GetState().IsKeyDown(Keys.Enter)) {
             level.currentLevelId++;
             level.LoadLevel();
@@ -117,7 +118,6 @@ public class Game1 : Game
         gameObjects.Sort((a,b)=> a.position.Y.CompareTo(b.position.Y));
         gui.Update(gameTime);
 
-
         // remove objects
         for (int i = gameObjects.Count - 1; i >= 0; i--) {
             if (gameObjects[i].destroy || gameObjects[i].group.Intersect(GameState.scheduleGroupDestruction).Any()) {
@@ -142,7 +142,11 @@ public class Game1 : Game
         _spriteBatch.Begin();
 
         _spriteBatch.DrawString( font, $"FPS: {fps}", new Vector2(10, 10), Color.White );
-
+        if (GameState.currentMenu == Menu.None || GameState.currentMenu == Menu.VerifyAnswer || GameState.currentMenu == Menu.Dialogue) {
+            for (int i = 0; i < GameState.hearts; i++) {
+                _spriteBatch.Draw(Textures[Texture.heart], new Rectangle(16 + 56 * i, 16, 48, 48), Color.White);
+            }
+        }
         gui.Draw( _spriteBatch, gameTime);
         _spriteBatch.End();
         base.Draw(gameTime);
