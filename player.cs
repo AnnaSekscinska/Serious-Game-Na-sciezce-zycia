@@ -20,7 +20,8 @@ public class Player : GameObject
     float scale = 1f;
     KeyboardState prevState;
     KeyboardState curState;
-    public Player(Point size, Vector2 colliderPositionOffset, Point colliderSize, ContentManager content) : base(Vector2.Zero, size, colliderPositionOffset, colliderSize) {
+    public Player(Point size, Vector2 colliderPositionOffset, Point colliderSize, ContentManager content) : base(Vector2.Zero, size, colliderPositionOffset, colliderSize)
+    {
 
         mForward = new AnimatedTexture(origin, rot, scale);
         mForward.Load(content, "sprite_forward", 3, animationSpeed);
@@ -30,14 +31,15 @@ public class Player : GameObject
         mSide.Load(content, "sprite_side", 3, animationSpeed);
 
 
-        currentAnim = mForward; 
+        currentAnim = mForward;
     }
-    public override void Draw(SpriteBatch sb, GameTime gameTime) {
+    public override void Draw(SpriteBatch sb, GameTime gameTime)
+    {
         //base.Draw(sb, gameTime);
         //sb.Draw(Textures[Serious_Game_Na_sciezce_zycia.Texture.spriteBoy], DrawDestination, Color.White);
-        
 
-        currentAnim.DrawFrame(sb, position+new Vector2(40,40), flipX);
+
+        currentAnim.DrawFrame(sb, position + new Vector2(40, 40), flipX);
         // sb.Draw(Textures[Serious_Game_Na_sciezce_zycia.Texture.pixel], Collider, Color.Yellow);
     }
 
@@ -71,14 +73,21 @@ public class Player : GameObject
             currentAnim = mSide;
             flipX = true;
         }
-        if (curState.IsKeyDown(Keys.Space)&& prevState.IsKeyUp(Keys.Space)) {
-            AnimatedTexture.color = AnimatedTexture.color == Color.Purple ? Color.Silver : Color.Purple; 
+        if (curState.IsKeyDown(Keys.Space) && prevState.IsKeyUp(Keys.Space))
+        {
+            AnimatedTexture.color = AnimatedTexture.color == Color.Purple ? Color.Silver : Color.Purple;
         }
-        
-        if (velocity != Vector2.Zero) {
+        if (curState.IsKeyDown(Keys.Q) && prevState.IsKeyUp(Keys.Q))
+        {
+            GameState.currentMenu = Menu.Main;
+        }
+
+        if (velocity != Vector2.Zero)
+        {
             currentAnim.Play();
         }
-        else {
+        else
+        {
             currentAnim.Reset();
         }
 

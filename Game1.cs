@@ -13,7 +13,7 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private static readonly Dictionary<Texture, Texture2D> Textures = [];
-    
+
     Point Resolution = new Point { X = 1024, Y = 768 };
     Player player;
     Camera camera;
@@ -43,7 +43,7 @@ public class Game1 : Game
         _graphics.PreferredBackBufferWidth = Resolution.X;
         _graphics.PreferredBackBufferHeight = Resolution.Y;
         _graphics.ApplyChanges();
-        
+
         base.Initialize();
     }
 
@@ -55,6 +55,9 @@ public class Game1 : Game
         Textures[Texture.single] = Content.Load<Texture2D>("cropped_tile");
         Textures[Texture.bump] = Content.Load<Texture2D>("bump");
         Textures[Texture.heart] = Content.Load<Texture2D>("lego_heart");
+        Textures[Texture.dialogue] = Content.Load<Texture2D>("dialogue");
+        Textures[Texture.sad_face] = Content.Load<Texture2D>("sad_face");
+        Textures[Texture.happy_face] = Content.Load<Texture2D>("happy_face");
         player = new(
             size: new Point(75, 130),
             colliderPositionOffset: new Vector2(0, 80),
@@ -72,6 +75,8 @@ public class Game1 : Game
         GameObject.Font = font;
         Level.Textures = Textures;
         Container.Textures = Textures;
+        GUI.font = font;
+        GUI.Textures = Textures;
         Container.font = font;
         Container.title = title;
         gui = new GUI(Resolution);
@@ -82,13 +87,15 @@ public class Game1 : Game
         elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
         frameCounter++;
 
-        if (elapsedTime >= 1) {
+        if (elapsedTime >= 1)
+        {
             fps = frameCounter;
             frameCounter = 0;
             elapsedTime = 0;
         }
         GameState.timer.Update(gameTime);
-        if (Keyboard.GetState().IsKeyDown(Keys.Enter)) {
+        if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+        {
             level.currentLevelId++;
             level.LoadLevel();
         }
@@ -115,12 +122,14 @@ public class Game1 : Game
         }
         camera.UpdateCamera(viewport);
         // sort objects by Y axis
-        gameObjects.Sort((a,b)=> a.position.Y.CompareTo(b.position.Y));
+        gameObjects.Sort((a, b) => a.position.Y.CompareTo(b.position.Y));
         gui.Update(gameTime);
 
         // remove objects
-        for (int i = gameObjects.Count - 1; i >= 0; i--) {
-            if (gameObjects[i].destroy || gameObjects[i].group.Intersect(GameState.scheduleGroupDestruction).Any()) {
+        for (int i = gameObjects.Count - 1; i >= 0; i--)
+        {
+            if (gameObjects[i].destroy || gameObjects[i].group.Intersect(GameState.scheduleGroupDestruction).Any())
+            {
                 gameObjects.RemoveAt(i);
             }
         }
@@ -133,21 +142,24 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.SandyBrown);
         _spriteBatch.Begin(transformMatrix: camera.Transform);
-        
+
 
         level.Draw(_spriteBatch, gameTime);
 
         //_spriteBatch.Draw(Textures[Texture.single], new Rectangle(0,0,456/8,712/8), Color.White);
         _spriteBatch.End();
-        _spriteBatch.Begin();
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-        _spriteBatch.DrawString( font, $"FPS: {fps}", new Vector2(10, 10), Color.White );
-        if (GameState.currentMenu == Menu.None || GameState.currentMenu == Menu.VerifyAnswer || GameState.currentMenu == Menu.Dialogue) {
-            for (int i = 0; i < GameState.hearts; i++) {
+        _spriteBatch.DrawString(font, $"FPS: {fps}", new Vector2(10, 10), Color.White);
+        if (GameState.currentMenu == Menu.None || GameState.currentMenu == Menu.VerifyAnswer || GameState.currentMenu == Menu.Dialogue)
+        {
+            for (int i = 0; i < GameState.hearts; i++)
+            {
                 _spriteBatch.Draw(Textures[Texture.heart], new Rectangle(16 + 56 * i, 16, 48, 48), Color.White);
             }
         }
-        gui.Draw( _spriteBatch, gameTime);
+        
+        gui.Draw(_spriteBatch, gameTime);
         _spriteBatch.End();
         base.Draw(gameTime);
     }

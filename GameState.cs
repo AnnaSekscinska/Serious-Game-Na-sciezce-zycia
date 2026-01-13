@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace Serious_Game_Na_sciezce_zycia;
 
-public static class GameState {
+public static class GameState
+{
     public static bool isWin = false;
     public static int hearts = 3;
-    public static Menu currentMenu = Menu.None;
+    public static Menu currentMenu = Menu.Main;
     public static bool isMenu { get => currentMenu != Menu.None; }
     public static Vector2 PlayerPosition = new Vector2(0, 0);
 

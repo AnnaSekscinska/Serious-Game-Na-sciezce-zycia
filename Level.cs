@@ -95,22 +95,15 @@ public class Level
     }
 
     private void DrawLevel(SpriteBatch sb, GameTime gameTime) {
-        var scale = 1;
-        var tileWidth = 100;
-        var tileHeight = 164;
-        var tileWidthScaled = tileWidth / scale;
-        var tileHeightScaled = tileHeight / scale;
-        var offsetX = 100 / scale;
-        var offsetY = 70 / scale;
+        var offsetX = 100;
+        var offsetY = 70;
 
         var width = currentLevel.mapWidth;
         var height = currentLevel.mapHeight+2;
-        var map = currentLevel.map;
-
-        // FLOR draw  TODO: create a single texture for potential performance improvement
+        // FLOR draw 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                var position = new Point(offsetX * j, (offsetY * i));
+                var position = new Point(offsetX * j, offsetY * i);
                 sb.Draw(Textures[Texture.bump], new Rectangle(position.X, position.Y, offsetX, offsetY), Color.SandyBrown);
             }
         }
