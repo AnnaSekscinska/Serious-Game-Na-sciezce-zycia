@@ -18,7 +18,7 @@ public class Game1 : Game
     Player player;
     Camera camera;
     Viewport viewport;
-    SpriteFont font;
+    SpriteFont font; 
     SpriteFont title;
     List<GameObject> gameObjects = new();
     Level level;
@@ -58,6 +58,10 @@ public class Game1 : Game
         Textures[Texture.dialogue] = Content.Load<Texture2D>("dialogue");
         Textures[Texture.sad_face] = Content.Load<Texture2D>("sad_face");
         Textures[Texture.happy_face] = Content.Load<Texture2D>("happy_face");
+        Textures[Texture.facts] = Content.Load<Texture2D>("CIEKAWOSTKI");
+        Textures[Texture.instruction] = Content.Load<Texture2D>("INSTRUKCJA");
+        Textures[Texture.main_menu] = Content.Load<Texture2D>("MENU_GLOWNE");
+        Textures[Texture.level_select] = Content.Load<Texture2D>("poziomy");
         player = new(
             size: new Point(75, 130),
             colliderPositionOffset: new Vector2(0, 80),
@@ -94,13 +98,14 @@ public class Game1 : Game
             elapsedTime = 0;
         }
         GameState.timer.Update(gameTime);
-        if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+        if (Keyboard.GetState().IsKeyDown(Keys.Enter) || GameState.LoadLevelDirective != -1)
         {
-            level.currentLevelId++;
+            level.currentLevelId = GameState.LoadLevelDirective;
             level.LoadLevel();
+            GameState.LoadLevelDirective = -1;
         }
 
-        if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+        if (Keyboard.GetState().IsKeyDown(Keys.Escape) || GameState.kill)
             Exit();
 
         foreach (var gameObj in gameObjects)
@@ -150,7 +155,7 @@ public class Game1 : Game
         _spriteBatch.End();
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-        _spriteBatch.DrawString(font, $"FPS: {fps}", new Vector2(10, 10), Color.White);
+
         if (GameState.currentMenu == Menu.None || GameState.currentMenu == Menu.VerifyAnswer || GameState.currentMenu == Menu.Dialogue)
         {
             for (int i = 0; i < GameState.hearts; i++)
@@ -158,8 +163,10 @@ public class Game1 : Game
                 _spriteBatch.Draw(Textures[Texture.heart], new Rectangle(16 + 56 * i, 16, 48, 48), Color.White);
             }
         }
-        
+
         gui.Draw(_spriteBatch, gameTime);
+        _spriteBatch.DrawString(font, $"FPS: {fps}", new Vector2(10, 10), Color.White);
+        _spriteBatch.DrawString(font, $"mp: {Mouse.GetState().Position}", new Vector2(10, 30), Color.White);
         _spriteBatch.End();
         base.Draw(gameTime);
     }

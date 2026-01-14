@@ -48,6 +48,10 @@ public class Player : GameObject
         if (GameState.isMenu) { return; }
         prevState = curState;
         curState = Keyboard.GetState();
+        if (curState.IsKeyDown(Keys.Q))
+        {
+            GameState.currentMenu = Menu.Main;
+        }
 
         if (curState.IsKeyDown(Keys.Down))
         {

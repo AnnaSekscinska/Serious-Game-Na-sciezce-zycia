@@ -24,7 +24,8 @@ public class Level
 
     private void ConvertLevelToGameObjects() {
         currentLevel = MapData.GetLevel(currentLevelId);
-
+        gameObjects.Clear();
+        gameObjects.Add(player);
         var width = currentLevel.mapWidth;
         var height = currentLevel.mapHeight;
         var map = currentLevel.map;
