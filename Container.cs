@@ -9,12 +9,17 @@ public class Text : Container
     Vector2? SetPos;
     public string text;
     SpriteFont f = font;
-    public new Vector2 PositionTopLeft { get{ 
-        if (SetPos != null) {
-            return SetPos.GetValueOrDefault() - Size/2;
+    public new Vector2 PositionTopLeft
+    {
+        get
+        {
+            if (SetPos != null)
+            {
+                return SetPos.GetValueOrDefault() - Size / 2;
+            }
+            return parent.PositionTopLeft + (parent.Size - Size) / 2;
         }
-        return parent.PositionTopLeft + (parent.Size - Size) / 2;
-        } }
+    }
     public new Vector2 Size { get => f.MeasureString(text); }
     public Text(string text, Vector2 SetPos, bool isTitle = false)
     {
@@ -35,7 +40,7 @@ public class Text : Container
     }
     public override void Draw(SpriteBatch sb, GameTime gameTime)
     {
-        sb.DrawString(f, text, PositionTopLeft, Color.White);
+        sb.DrawString(f, text, PositionTopLeft, Color.Black);
     }
 }
 

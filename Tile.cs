@@ -9,13 +9,13 @@ namespace Serious_Game_Na_sciezce_zycia;
 public class EndZone : Zone
 {
     public EndZone(Vector2 position, Point size) : base(null, null, position, size) {
-        group = [100];
+        group = [115];
     }
     public override void Update(GameTime gameTime) {
         if (Collider.Contains(GameState.PlayerPosition)) {
             GameState.currentMenu = Menu.WinLevel;
             GameState.scheduleGroupDestruction.AddRange(group);
-            Console.WriteLine("yupicayay motherfucker!");
+            Console.WriteLine("endzone");
         }
     }
 }
@@ -38,7 +38,7 @@ public class Zone : GameObject
         }
     }
     public override void Draw(SpriteBatch sb, GameTime gameTime) {
-        sb.Draw(Textures[Texture.single], new Rectangle((int)position.X, (int)position.Y, size.X, size.Y), color);
+        sb.Draw(Textures[Texture.pixel], new Rectangle((int)position.X, (int)position.Y, size.X, size.Y), new Color(240,120,120,120));
         // sb.DrawString(Font, $"{position}", position, Color.Black);
     }
 }

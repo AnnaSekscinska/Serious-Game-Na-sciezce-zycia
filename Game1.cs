@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -62,6 +60,8 @@ public class Game1 : Game
         Textures[Texture.instruction] = Content.Load<Texture2D>("INSTRUKCJA");
         Textures[Texture.main_menu] = Content.Load<Texture2D>("MENU_GLOWNE");
         Textures[Texture.level_select] = Content.Load<Texture2D>("poziomy");
+        Textures[Texture.dude_alive] = Content.Load<Texture2D>("dudek");
+        Textures[Texture.dude_dead] = Content.Load<Texture2D>("dudek_kill");
         player = new(
             size: new Point(75, 130),
             colliderPositionOffset: new Vector2(0, 80),
@@ -156,7 +156,7 @@ public class Game1 : Game
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
 
-        if (GameState.currentMenu == Menu.None || GameState.currentMenu == Menu.VerifyAnswer || GameState.currentMenu == Menu.Dialogue)
+        if (GameState.currentMenu == Menu.None || GameState.currentMenu == Menu.VerifyAnswer || GameState.currentMenu == Menu.Dialogue || GameState.currentMenu == Menu.LevelBegin)
         {
             for (int i = 0; i < GameState.hearts; i++)
             {
@@ -165,8 +165,8 @@ public class Game1 : Game
         }
 
         gui.Draw(_spriteBatch, gameTime);
-        _spriteBatch.DrawString(font, $"FPS: {fps}", new Vector2(10, 10), Color.White);
-        _spriteBatch.DrawString(font, $"mp: {Mouse.GetState().Position}", new Vector2(10, 30), Color.White);
+        //_spriteBatch.DrawString(font, $"FPS: {fps}", new Vector2(10, 10), Color.White);
+        //_spriteBatch.DrawString(font, $"mp: {Mouse.GetState().Position}", new Vector2(10, 30), Color.White);
         _spriteBatch.End();
         base.Draw(gameTime);
     }

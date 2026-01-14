@@ -77,7 +77,7 @@ public class Button : Container
     }
     public override void Draw(SpriteBatch sb, GameTime gameTime)
     {
-        sb.Draw(Textures[Texture.pixel], Hitbox, Color.Gray);
+        //sb.Draw(Textures[Texture.pixel], Hitbox, Color.Gray);
         foreach (var child in children)
         {
             child.Draw(sb, gameTime);
@@ -162,7 +162,7 @@ public class hint1Button : Button
         if (isClicked())
         {
             Console.WriteLine($"{text}: Invoke event");
-            GameState.CurrentHintText = "Ciekawostka 1: Co powinno być w apteczce?\nDobrze wyposażona apteczka to podstawa pierwszej pomocy.\nWarto mieć w niej m.in. jałowe gaziki i bandaże, plastry,\nrękawiczki jednorazowe, nożyczki, chustę trójkątną, środek do dezynfekcji ran oraz koc ratunkowy(folię NRC).\nPamiętaj - co jakiś czas sprawdź,\nczy czegoś nie brakuje i czy leki nie są przeterminowane!";
+            GameState.CurrentHintText = "Ciekawostka 1: Co powinno być w apteczce?\nDobrze wyposażona apteczka to podstawa!\nWarto mieć w niej m.in. jałowe gaziki i bandaże,\n plastry, rękawiczki jednorazowe, nożyczki,\nchustę trójkątną, środek do dezynfekcji ran oraz koc \nratunkowy(folię NRC).\nPamiętaj - co jakiś czas sprawdź, czy czegoś nie \nbrakuje i czy leki nie są przeterminowane!";
         }
     }
 }
@@ -178,7 +178,7 @@ public class hint2Button : Button
         if (isClicked())
         {
             Console.WriteLine($"{text}: Invoke event");
-            GameState.CurrentHintText = "Ciekawostka 2: 112 - jeden numer w całej Europie\nNumer alarmowy 112 działa w całej Unii Europejskiej.\nCo ważne, możesz go wybrać nawet wtedy, gdy nie masz pieniędzy na koncie,\ntelefon jest zablokowany albo nie masz zasięgu swojej sieci.\nW nagłych sytuacjach po prostu dzwoń - pomoc zawsze spróbuje dotrzeć.";
+            GameState.CurrentHintText = "Ciekawostka 2: 112 - jeden numer w całej Europie\nNumer alarmowy 112 działa w całej Unii Europejskiej.\nCo ważne, możesz go wybrać nawet wtedy, gdy nie \nmasz pieniędzy na koncie, telefon jest zablokowany \nalbo nie masz zasięgu swojej sieci.\nW nagłych sytuacjach po prostu dzwoń - pomoc\nzawsze spróbuje dotrzeć.";
         }
     }
 }
@@ -194,7 +194,7 @@ public class hint3Button : Button
         if (isClicked())
         {
             Console.WriteLine($"{text}: Invoke event");
-            GameState.CurrentHintText = "Ciekawostka 3: Najważniejsza zasada pierwszej pomocy\nZanim pomożesz innym, zadbaj o własne bezpieczeństwo.\nJeśli w pobliżu jest ogień, prąd albo ruch uliczny - najpierw usuń zagrożenie lub wezwij pomoc.\nPamiętaj: ranny ratownik nikomu nie pomoże.";
+            GameState.CurrentHintText = "Ciekawostka 3: Najważniejsza zasada pierwszej\n pomocy. Zanim pomożesz innym, zadbaj o własne \nbezpieczeństwo.Jeśli w pobliżu jest ogień, prąd albo\nruch uliczny - najpierw usuń zagrożenie lub wezwij \npomoc. Pamiętaj: ranny ratownik nikomu nie pomoże.";
         }
     }
 }
@@ -210,7 +210,7 @@ public class hint4Button : Button
         if (isClicked())
         {
             Console.WriteLine($"{text}: Invoke event");
-            GameState.CurrentHintText = "Ciekawostka 4: Jak sprawdzić, czy ktoś oddycha?\nAby sprawdzić oddech, pochyl się nad twarzą poszkodowanego.\nPrzez około 10 sekund słuchaj, czy słychać oddech, czuj go na swoim policzku i obserwuj, czy klatka piersiowa się unosi.\nJeśli nie ma oddechu - natychmiast wezwij pomoc i rozpocznij RKO.";
+            GameState.CurrentHintText = "Ciekawostka 4: Jak sprawdzić, czy ktoś oddycha?\nAby sprawdzić oddech, pochyl się nad twarzą \nposzkodowanego. Przez około 10 sekund słuchaj, \nczy słychać oddech, czuj go na swoim policzku i \nobserwuj, czy klatka piersiowa się unosi.\nJeśli nie ma oddechu - natychmiast wezwij pomoc i \nrozpocznij RKO.";
         }
     }
 }
@@ -226,7 +226,7 @@ public class hint5Button : Button
         if (isClicked())
         {
             Console.WriteLine($"{text}: Invoke event");
-            GameState.CurrentHintText = "Ciekawostka 5: Zimny okład jest pomocny, ale z umiarem.\nPrzy stłuczeniach i skręceniach zimny okład może zmniejszyć ból i obrzęk.\nPamiętaj jednak, by nie przykładać lodu bezpośrednio do skóry, zawsze owiń go w ręcznik.\nChłodź miejsce przez 10-15 minut i w razie potrzeby powtórz po kilku godzinach.\nW nagłych sytuacjach nawet mrożony groszek z zamrażarki może się przydać.";
+            GameState.CurrentHintText = "Ciekawostka 5: Zimny okład jest pomocny, ale z \numiarem. Przy stłuczeniach i skręceniach zimny \nokład może zmniejszyć ból i obrzęk.Pamiętaj \njednak, by nie przykładać lodu bezpośrednio do skóry, \nzawsze owiń go w ręcznik. Chłodź miejsce przez \n10-15 minut i w razie potrzeby powtórz po kilku \ngodzinach. W nagłych sytuacjach nawet mrożony \ngroszek z zamrażarki może się przydać.";
         }
     }
 }
@@ -257,9 +257,9 @@ public class level1Button : Button
         if (isClicked())
         {
             Console.WriteLine($"{text}: Invoke event");
-           // GameState.currentMenu = Menu.LevelSelect;
-           GameState.currentMenu = Menu.None;
-           GameState.LoadLevelDirective = 0;
+            // GameState.currentMenu = Menu.LevelSelect;
+            GameState.currentMenu = Menu.LevelBegin;
+            GameState.LoadLevelDirective = 0;
         }
     }
 }
@@ -275,7 +275,7 @@ public class level2Button : Button
         if (isClicked())
         {
             Console.WriteLine($"{text}: Invoke event");
-            GameState.currentMenu = Menu.None;
+            GameState.currentMenu = Menu.LevelBegin;
             GameState.LoadLevelDirective = 1;
         }
     }
@@ -292,7 +292,7 @@ public class level3Button : Button
         if (isClicked())
         {
             Console.WriteLine($"{text}: Invoke event");
-            GameState.currentMenu = Menu.None;
+            GameState.currentMenu = Menu.LevelBegin;
             GameState.LoadLevelDirective = 2;
         }
     }
@@ -309,7 +309,7 @@ public class level4Button : Button
         if (isClicked())
         {
             Console.WriteLine($"{text}: Invoke event");
-            GameState.currentMenu = Menu.None;
+            GameState.currentMenu = Menu.LevelBegin;
             GameState.LoadLevelDirective = 3;
         }
     }

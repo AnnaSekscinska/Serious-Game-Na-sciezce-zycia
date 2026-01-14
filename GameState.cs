@@ -5,6 +5,7 @@ namespace Serious_Game_Na_sciezce_zycia;
 
 public static class GameState
 {
+    public static string currentScenario;
     public static int LoadLevelDirective = -1;
     public static string CurrentHintText = "";
     public static bool kill = false;

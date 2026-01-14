@@ -20,6 +20,7 @@ public class GUI
     List<Button> hintsMenu = new();
 
     List<Button> levelMenu = new();
+    
     Container Dialogue;
 
     public GUI(Point resolution)
@@ -52,14 +53,14 @@ public class GUI
              new level3Button("level3", new(260, 350), size),
              new level4Button("level4", new(550, 360), size)
         ];
-        var margin = new Vector2(10, 10);
+
         Dialogue = new Container(
             new Vector2(40, Resolution.Y - 225), new Vector2(Resolution.X - 80, Resolution.Y / 4)
             );
 
         Dialogue.Embed(new Text("", new Vector2(Resolution.X / 2, 590)));
-        Dialogue.Embed(new QuestionButton("", Dialogue.PositionTopLeft + new Vector2(0, Dialogue.Size.Y / 2) + margin, Dialogue.Size / 2 - margin * 2));
-        Dialogue.Embed(new QuestionButton("", Dialogue.PositionTopLeft + margin + Dialogue.Size / 2, Dialogue.Size / 2 - margin * 2));
+        Dialogue.Embed(new QuestionButton("", new(40, 620), new(440, 130)));
+        Dialogue.Embed(new QuestionButton("", new(550, 620), new(440, 130)));
 
         // VerifyAnswer = new Container(new Vector2(100, 100), new Vector2(400, 100));
         // VerifyAnswer.Embed(new Text(""));
@@ -151,6 +152,18 @@ public class GUI
                     break;
                 }
                 break;
+            case Menu.WinLevel:
+                if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                {
+                    GameState.currentMenu = Menu.Main;
+                }
+                break;
+            case Menu.LevelBegin:
+                if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                {
+                    GameState.currentMenu = Menu.None;
+                }
+                break;
             default:
                 break;
         }
@@ -175,7 +188,7 @@ public class GUI
                 break;
             case Menu.Hints:
                 sb.Draw(Textures[Texture.facts], Vector2.Zero, Color.White);
-                sb.DrawString(font, GameState.CurrentHintText, new Vector2(580, 620), Color.Black);
+                sb.DrawString(font, GameState.CurrentHintText, new Vector2(540, 560), Color.Black);
                 break;
             case Menu.Instruction:
                 sb.Draw(Textures[Texture.instruction], Vector2.Zero, Color.White);
@@ -190,11 +203,27 @@ public class GUI
                 Dialogue.Draw(sb, gameTime);
                 break;
             case Menu.VerifyAnswer:
-                var scale = 6;
                 var t = GameState.questionState == QuestionState.correctAnswer ? Textures[Texture.happy_face] : Textures[Texture.sad_face];
-                sb.Draw(t, new Rectangle(0, 0, t.Width * scale, t.Height * scale), Color.White);
-                sb.DrawString(font, answerString, new Vector2(500, 160), Color.Black);
+                sb.Draw(t, Vector2.Zero, Color.White);
+                sb.DrawString(font, answerString, new Vector2(470, 300), Color.Black);
                 //VerifyAnswer.Draw(sb, gameTime);
+                break;
+            case Menu.WinLevel:
+                var winCon = GameState.hearts > 0;
+                var tex = winCon ? Textures[Texture.happy_face] : Textures[Texture.sad_face];
+
+                sb.Draw(tex, Vector2.Zero, Color.White);
+
+                var loseGame = "Niestety tym razem się nie udało.\nPowtórz zasady pierwszej pomocy \ni spróbuj jeszcze raz...\nKliknij spacja by wrócić do menu.";
+                var winGame = "Gratulacje!\nUkończyłeś poziom i uratowałeś \nposzkodowanego!\nŚwietna robota, prawdziwie bohaterska akcja.\nKliknij spacja by wrócić do menu.";
+                var outString = winCon ? winGame : loseGame;
+                sb.DrawString(font, outString, new Vector2(470, 300), Color.Black);
+                break;
+            case Menu.LevelBegin:
+                string text = GameState.currentScenario;
+                sb.Draw(Textures[Texture.happy_face], Vector2.Zero, Color.White);
+
+                sb.DrawString(font, text, new Vector2(460, 270), Color.Black);
                 break;
             default:
                 break;
