@@ -3,7 +3,7 @@ from PIL import Image
 # =====================
 # CONFIG
 # =====================
-IMAGE_PATH = "Maze3.png"
+IMAGE_PATH = "Maze2.png"
 OUTPUT_PATH = "output.txt"
 
 # Characters from dark → light
